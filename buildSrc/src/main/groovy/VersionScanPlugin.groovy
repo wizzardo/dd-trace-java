@@ -21,6 +21,7 @@ import org.gradle.api.Project
 import org.objectweb.asm.ClassReader
 import org.objectweb.asm.tree.ClassNode
 
+import java.util.concurrent.CopyOnWriteArrayList
 import java.util.concurrent.atomic.AtomicReference
 import java.util.jar.JarEntry
 import java.util.jar.JarFile
@@ -60,6 +61,8 @@ class VersionScanPlugin implements Plugin<Project> {
     Set<String> allExclude = Sets.newConcurrentHashSet()
     AtomicReference<Set<String>> keyPresent = new AtomicReference(Collections.emptySet())
     AtomicReference<Set<String>> keyMissing = new AtomicReference(Collections.emptySet())
+    // TODO: save all report results in list
+    List<Object> versionScanResults = new CopyOnWriteArrayList<Object>()
 
     def scanVersionsReport = project.task('scanVersionsReport') {
       description = "Prints the result of the scanVersions task"
@@ -71,6 +74,7 @@ class VersionScanPlugin implements Plugin<Project> {
         def exclusivePresent = keyPresent.get().size()
         def exclusiveMissing = keyMissing.get().size()
 
+        // TODO: iterate report list and print any failures
         if (project.hasProperty("showClasses")) {
           println "keyPresent: ${allInclude.size()}->$inCommonPresent->$exclusivePresent - ${keyPresent.get()}"
           println "+++++++++++++++++++++"
@@ -183,6 +187,8 @@ class VersionScanPlugin implements Plugin<Project> {
 
 //      println "Scanning ${includeVersionSet.size()} included and ${excludeVersionSet.size()} excluded versions.  Included: ${includeVersionSet.collect { it.version }}}"
 
+      // TODO: Pass reports into each version
+
       includeVersionSet.each { version ->
         addScanTask("Include", new DefaultArtifact(version.groupId, version.artifactId, "jar", version.version), keyPresent, allInclude, project)
       }
@@ -193,6 +199,7 @@ class VersionScanPlugin implements Plugin<Project> {
     }
   }
 
+  // TODO Pass result list to task
   def addScanTask(String label, Artifact artifact, AtomicReference<Set<String>> keyIdentifiers, Set<String> allIdentifiers, Project project) {
     def name = "scanVersion$label-$artifact.groupId-$artifact.artifactId-$artifact.version"
     def config = project.configurations.create(name)
