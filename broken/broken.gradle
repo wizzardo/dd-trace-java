@@ -1,0 +1,17 @@
+apply plugin: 'java'
+apply plugin: 'groovy'
+
+repositories {
+  mavenLocal()
+  jcenter()
+  mavenCentral()
+}
+
+dependencies {
+  testCompile deps.spock
+  testCompile deps.groovy
+  testCompile deps.testLogging
+
+  compile deps.bytebuddy
+  compile deps.bytebuddyagent
+}

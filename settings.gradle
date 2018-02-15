@@ -1,42 +1,7 @@
 rootProject.name = 'dd-trace-java'
 
-include ':dd-trace-ot'
-include ':dd-java-agent'
-include ':dd-java-agent:testing'
-include ':dd-java-agent:tooling'
-include ':dd-java-agent-ittests'
-include ':dd-trace-api'
+include ':broken'
 
-// instrumentation:
-include ':dd-java-agent:instrumentation:apache-httpclient-4.3'
-include ':dd-java-agent:instrumentation:aws-sdk'
-include ':dd-java-agent:instrumentation:datastax-cassandra-3.2'
-include ':dd-java-agent:instrumentation:jax-rs'
-include ':dd-java-agent:instrumentation:jdbc'
-include ':dd-java-agent:instrumentation:jms-1'
-include ':dd-java-agent:instrumentation:jms-2'
-include ':dd-java-agent:instrumentation:kafka-clients-0.11'
-include ':dd-java-agent:instrumentation:kafka-streams-0.11'
-include ':dd-java-agent:instrumentation:mongo-3.1'
-include ':dd-java-agent:instrumentation:mongo-async-3.3'
-include ':dd-java-agent:instrumentation:okhttp-3'
-include ':dd-java-agent:instrumentation:servlet-2'
-include ':dd-java-agent:instrumentation:servlet-3'
-include ':dd-java-agent:instrumentation:spring-web'
-include ':dd-java-agent:instrumentation:trace-annotation'
-
-
-if (JavaVersion.current().isJava8Compatible()) {
-  // benchmark
-  include ':dd-java-agent:benchmark'
-  include ':dd-java-agent:benchmark-integration'
-  include ':dd-java-agent:benchmark-integration:jetty-perftest'
-
-  // examples
-  include ':examples:dropwizard-mongo-client'
-  include ':examples:spring-boot-jdbc'
-  include ':examples:rest-spark'
-}
 
 def setBuildFile(project) {
   project.buildFileName = "${project.name}.gradle"

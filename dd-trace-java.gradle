@@ -1,21 +1,8 @@
-buildscript {
-  repositories {
-    jcenter()
-  }
-  dependencies {
-    classpath "io.franzbecker:gradle-lombok:1.8"
-    classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.4.18"
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3'
-  }
-}
 
-plugins {
-  id 'com.github.sherter.google-java-format' version '0.6'
-}
 
 allprojects {
   group = 'com.datadoghq'
-  version = '0.3.3-SNAPSHOT'
+  version = 'NO_RELEASE-SNAPSHOT'
 
   apply from: "${rootDir}/gradle/dependencies.gradle"
 }
@@ -28,7 +15,7 @@ repositories {
 description = 'dd-trace-java'
 
 // Applied here to allow publishing of artifactory build info
-apply from: "${rootDir}/gradle/publish.gradle"
+//apply from: "${rootDir}/gradle/publish.gradle"
 
 ext.gradleWrapperVersion = '4.3.1'
 task wrapper(type: Wrapper) {
