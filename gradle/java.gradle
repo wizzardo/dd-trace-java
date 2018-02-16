@@ -4,18 +4,56 @@ apply plugin: 'groovy'
 sourceCompatibility = 1.7
 targetCompatibility = 1.7
 
-apply plugin: "io.franzbecker.gradle-lombok"
+apply plugin: 'net.ltgt.apt'
 
-lombok { // optional: values below are the defaults
-  version = "1.16.20"
-  sha256 = "c5178b18caaa1a15e17b99ba5e4023d2de2ebc18b58cde0f5a04ca4b31c10e6d"
+compileTestGroovy {
+  groovyOptions.javaAnnotationProcessing = true
 }
 
 apply plugin: "eclipse"
+apply plugin: 'net.ltgt.apt-eclipse'
 eclipse {
   classpath {
     downloadSources = true
     downloadJavadoc = true
+  }
+
+  jdt {
+    apt {
+      // whether annotation processing is enabled in Eclipse
+      aptEnabled = true
+      // where Eclipse will output the generated sources; value is interpreted as per project.file()
+      genSrcDir = file('.apt_generated')
+      // whether annotation processing is enabled in the editor
+      reconcileEnabled = true
+      // a map of annotation processor options; a null value will pass the argument as -Akey rather than -Akey=value
+      processorOptions = compileJava.aptOptions.processorArgs
+
+      file {
+        whenMerged { jdtApt ->
+          // you can tinker with the JdtApt here
+        }
+
+        withProperties { properties ->
+          // you can tinker with the Properties here
+        }
+      }
+    }
+  }
+
+  factorypath {
+    plusConfigurations = [ configurations.apt, configurations.testApt ]
+    minusConfigurations = []
+
+    file {
+      whenMerged { factorypath ->
+        // you can tinker with the Factorypath here
+      }
+
+      withXml { node ->
+        // you can tinker with the Node here
+      }
+    }
   }
 }
 if (configurations.find { it.name == 'jmh' }) {
@@ -35,6 +73,13 @@ repositories {
 }
 
 dependencies {
+  annotationProcessor "org.projectlombok:lombok:1.16.20"
+  compileOnly "org.projectlombok:lombok:1.16.20"
+  testAnnotationProcessor "org.projectlombok:lombok:1.16.20"
+  testCompileOnly "org.projectlombok:lombok:1.16.20"
+  annotationProcessor deps.autoservice
+  testAnnotationProcessor deps.autoservice
+
   testCompile deps.junit
   testCompile group: 'org.assertj', name: 'assertj-core', version: '2.9.+'
   testCompile group: 'org.mockito', name: 'mockito-core', version: '2.7.22'

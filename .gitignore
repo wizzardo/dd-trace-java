@@ -20,6 +20,9 @@ bin/
 .settings
 .project
 .classpath
+.apt_generated
+.factorypath
+
 
 # OS generated files #
 ######################

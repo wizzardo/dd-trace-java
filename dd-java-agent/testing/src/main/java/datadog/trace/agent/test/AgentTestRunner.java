@@ -63,8 +63,10 @@ public abstract class AgentTestRunner extends Specification {
   protected static final Phaser WRITER_PHASER = new Phaser();
 
   static {
+  if (LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME) instanceof Logger) {
     ((Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME)).setLevel(Level.WARN);
     ((Logger) LoggerFactory.getLogger("datadog")).setLevel(Level.DEBUG);
+  }
 
     WRITER_PHASER.register();
     TEST_WRITER =
